@@ -1,0 +1,22 @@
+﻿@using procon.Features.Reasons
+
+<div class="row">
+    <h3>@Name</h3>
+</div>
+@foreach (var reason in Reasons)
+{
+    <div class="row">
+        <div class="col-mid-8">
+            @reason.Description
+        </div>        
+        <div class="col-mid-4">
+            @reason.Weight
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter] public string Name { get; set; }
+    [Parameter] public List<Reason> Reasons { get; set; }
+}

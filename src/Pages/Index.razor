@@ -1,7 +1,33 @@
 ﻿@page "/"
+@using procon.Features.Reasons
+@using procon.Features.Reasons.Value_Objects
 
-<h1>Hello, world!</h1>
+<h1>Enter your list of pros and cons</h1>
 
-Welcome to your new app.
+@if (ReasonList != null)
+{
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    <div class="row">
+        <div class="col-md-6">
+            <ReasonList Name="Pros" Reasons="@ReasonList.Where(x => x.IsPro()).ToList()"></ReasonList>
+        </div>
+        <div class="col-md-6">
+            <ReasonList Name="Cons" Reasons="@ReasonList.Where(x => x.IsCon()).ToList()"></ReasonList>
+        </div>
+    </div>
+}
+
+
+@code
+{
+    private List<Reason> ReasonList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ReasonList = new List<Reason>
+    {
+            new Reason(new Description("Good thing")),
+            new Reason(new Description("Bad thing"), new Weight(-1), new Probability(100))
+        };
+    }
+}

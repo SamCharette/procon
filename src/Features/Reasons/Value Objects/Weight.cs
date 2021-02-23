@@ -22,5 +22,9 @@ namespace procon.Features.Reasons.Value_Objects
         }   
 
         public int Value() => _weight;
+        public override string ToString()
+        {
+            return _weight.ToString();
+        }
     }
 }

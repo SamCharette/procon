@@ -3,14 +3,15 @@
 <div class="row">
     <h3>@Name</h3>
 </div>
+
 @foreach (var reason in Reasons)
 {
-    <div class="row">
-        <div class="col-mid-8">
+    <div class="row justify-content-between">
+        <div class="col-8">
             @reason.Description
-        </div>        
-        <div class="col-mid-4">
-            @reason.Weight
+        </div>
+        <div class="col-4">
+            @reason.Weight.ToString()
         </div>
     </div>
 }

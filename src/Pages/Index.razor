@@ -4,11 +4,11 @@
 
 @if (_showEditor)
 {
-    <input class="form-control" value="@Question" @onchange="@((ChangeEventArgs __e) => ChangeQuestion(__e.Value.ToString()))" />
+    <input class="form-control" value="@_question" @onchange="@((ChangeEventArgs __e) => ChangeQuestion(__e.Value.ToString()))" />
 }
 else
 {
-    <h2 @onclick="@(() => _showEditor = !_showEditor)">@Question</h2>
+    <h2 @onclick="@(() => _showEditor = !_showEditor)">@_question</h2>
 }
 
 
@@ -17,20 +17,10 @@ else
 
     <div class="row @MainClass()">
         <div class="col-md-6 @ProsClass()">
-            <ReasonList Name="Pros" Reasons="@_reasonList.Where(x => x.IsPro()).ToList()"></ReasonList>
+            <ReasonList Name="Pros" Total="@ProsTotal()" Reasons="@_reasonList.Where(x => x.IsPro()).ToList()"></ReasonList>
         </div>
         <div class="col-md-6 @ConsClass()">
-            <ReasonList Name="Cons" Reasons="@_reasonList.Where(x => x.IsCon()).ToList()"></ReasonList>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            Total : @ProsTotal()
-            <button type="button" class="btn btn-success btn-block">Add Pro</button>
-        </div>
-        <div class="col-md-6">
-            Total : @ConsTotal()
-            <button type="button" class="btn btn-danger btn-block">Add Con</button>
+            <ReasonList Name="Cons" Total="@ConsTotal()" Reasons="@_reasonList.Where(x => x.IsCon()).ToList()"></ReasonList>
         </div>
     </div>
 }
@@ -40,6 +30,8 @@ else
 {
     private bool _showEditor = false;
     private int _threshold = 2;
+    private List<Reason> _reasonList;
+    private string _question = "Click to change the question.";
 
     private string MainClass()
     {
@@ -55,11 +47,7 @@ else
     {
         return IsOverallNegative() ? "alert-danger" : "";
     }
-
-    private List<Reason> _reasonList;
-
-    private string Question = "Click to change the question.";
-
+    
     private decimal ProsTotal()
     {
         return _reasonList.Where(x => x.IsPro()).Sum(x => x.TotalValue);
@@ -73,7 +61,7 @@ else
     private decimal Total()
     {
         return _reasonList.Sum(x => x.TotalValue);
-        
+
     }
 
     private bool IsOverallPositive()
@@ -88,7 +76,7 @@ else
 
     private void ChangeQuestion(string newQuestion)
     {
-        Question = newQuestion;
+        _question = newQuestion;
         _showEditor = !_showEditor;
     }
 

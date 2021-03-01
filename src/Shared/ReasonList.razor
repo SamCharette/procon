@@ -1,23 +1,43 @@
 ﻿@using procon.Features.Reasons
 
-<div class="row justify-content-center">
-    <h3>@Name</h3>
-</div>
 
-@foreach (var reason in Reasons)
-{
-    <div class="row justify-content-between">
-        <div class="col-8">
-            @reason.Description
-        </div>
-        <div class="col-4">
-            @reason.Weight.ToString()
+<div class="card">
+    <div class="card-header">
+        <div class="row justify-content-center">
+            <h3>@Name</h3>
         </div>
     </div>
-}
+    <div class="card-body">
+        @foreach (var reason in Reasons)
+        {
+            <div class="row justify-content-between">
+                <div class="col-8">
+                    @reason.Description
+                </div>
+                <div class="col-4">
+                    @reason.Weight.ToString()
+                </div>
+            </div>
+        }
+    </div>
+    <div class="card-footer">
+        Total : @Total
+        <button type="button" class="btn btn-block @ButtonClass()">Add @Name</button>
+    </div>
+</div>
+
+
+
+
 
 
 @code {
     [Parameter] public string Name { get; set; }
     [Parameter] public List<Reason> Reasons { get; set; }
+    [Parameter] public decimal Total { get; set; }
+
+    public string ButtonClass()
+    {
+        return @Name == "Pros" ? "alert-success" : "alert-danger";
+    }
 }

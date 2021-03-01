@@ -29,5 +29,7 @@ namespace procon.Features.Reasons
         public bool IsPro() => Weight.Value() > 0;
         public bool IsCon() => !IsPro();
 
+        public decimal TotalValue => Weight.Value() * Probability.ValueAsDecimal();
+
     }
 }

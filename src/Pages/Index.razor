@@ -8,18 +8,18 @@
 }
 else
 {
-    <h2 hidden="@_showEditor" @onclick="@(() => _showEditor = !_showEditor)">@Question</h2>
+    <h2 @onclick="@(() => _showEditor = !_showEditor)">@Question</h2>
 }
 
 
 @if (ReasonList != null)
 {
 
-    <div class="row">
-        <div class="col-md-6">
+    <div class="row @MainClass()">
+        <div class="col-md-6 @ProsClass()">
             <ReasonList Name="Pros" Reasons="@ReasonList.Where(x => x.IsPro()).ToList()"></ReasonList>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 @ConsClass()">
             <ReasonList Name="Cons" Reasons="@ReasonList.Where(x => x.IsCon()).ToList()"></ReasonList>
         </div>
     </div>
@@ -29,9 +29,42 @@ else
 @code
 {
     private bool _showEditor = false;
-    private List<Reason> ReasonList;
+    public int Threshold = 2;
+
+    public string MainClass()
+    {
+        return Math.Abs(Total()) <= Threshold ? "alert-warning" : "";
+    }
+
+    public string ProsClass()
+    {
+        return IsOverallPositive() ? "alert-success" : "";
+    }
+
+    public string ConsClass()
+    {
+        return IsOverallNegative() ? "alert-danger" : "";
+    }
+
+    public List<Reason> ReasonList;
 
     public string Question = "Click to change the question.";
+
+    public decimal Total()
+    {
+        var total = ReasonList.Sum(x => x.TotalValue);
+        return total;
+    }
+
+    public bool IsOverallPositive()
+    {
+        return Total() > Threshold;
+    }
+
+    public bool IsOverallNegative()
+    {
+        return Total() < -Threshold;
+    }
 
     public void ChangeQuestion(string newQuestion)
     {
@@ -43,8 +76,8 @@ else
     {
         ReasonList = new List<Reason>
         {
-            new Reason(new Description("Good thing")),
-            new Reason(new Description("Bad thing"), new Weight(-1), new Probability(100))
+            new Reason(new Description("Good thing"), new Weight(11), new Probability(100)),
+            new Reason(new Description("Bad thing"), new Weight(-10), new Probability(100))
         };
     }
 }

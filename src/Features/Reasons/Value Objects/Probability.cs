@@ -12,7 +12,7 @@ namespace procon.Features.Reasons.Value_Objects
         }
 
         public int Value() => _value;
-        public decimal ValueAsDecimal() => 1 / _value;
+        public decimal ValueAsDecimal() => _value / 100;
 
     }
 }

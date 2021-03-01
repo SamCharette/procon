@@ -18,9 +18,12 @@ else
     <div class="row @MainClass()">
         <div class="col-md-6 @ProsClass()">
             <ReasonList Name="Pros" Reasons="@ReasonList.Where(x => x.IsPro()).ToList()"></ReasonList>
+            <button type="button" class="btn btn-success btn-block">Add Pro</button>
         </div>
         <div class="col-md-6 @ConsClass()">
             <ReasonList Name="Cons" Reasons="@ReasonList.Where(x => x.IsCon()).ToList()"></ReasonList>
+            <button type="button" class="btn btn-danger btn-block">Add Con</button>
+            
         </div>
     </div>
 }

@@ -10,12 +10,12 @@ namespace procon.Features.Reasons
         public Weight Weight { get; private set; }
         public Probability Probability { get; private set; }
 
-        public Reason(Description description, Weight weight, Probability probability)
+        public Reason(Description description, Weight weight, Probability probability = null)
         {
             _id = Guid.NewGuid();
             Description = description;
             Weight = weight;
-            Probability = probability;
+            Probability = probability?? new Probability(100);
         }
 
         public Reason(Description description)

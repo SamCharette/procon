@@ -12,18 +12,25 @@ else
 }
 
 
-@if (ReasonList != null)
+@if (_reasonList != null)
 {
 
     <div class="row @MainClass()">
         <div class="col-md-6 @ProsClass()">
-            <ReasonList Name="Pros" Reasons="@ReasonList.Where(x => x.IsPro()).ToList()"></ReasonList>
-            <button type="button" class="btn btn-success btn-block">Add Pro</button>
+            <ReasonList Name="Pros" Reasons="@_reasonList.Where(x => x.IsPro()).ToList()"></ReasonList>
         </div>
         <div class="col-md-6 @ConsClass()">
-            <ReasonList Name="Cons" Reasons="@ReasonList.Where(x => x.IsCon()).ToList()"></ReasonList>
+            <ReasonList Name="Cons" Reasons="@_reasonList.Where(x => x.IsCon()).ToList()"></ReasonList>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            Total : @ProsTotal()
+            <button type="button" class="btn btn-success btn-block">Add Pro</button>
+        </div>
+        <div class="col-md-6">
+            Total : @ConsTotal()
             <button type="button" class="btn btn-danger btn-block">Add Con</button>
-            
         </div>
     </div>
 }
@@ -32,44 +39,54 @@ else
 @code
 {
     private bool _showEditor = false;
-    public int Threshold = 2;
+    private int _threshold = 2;
 
-    public string MainClass()
+    private string MainClass()
     {
-        return Math.Abs(Total()) <= Threshold ? "alert-warning" : "";
+        return Math.Abs(Total()) <= _threshold ? "alert-warning" : "";
     }
 
-    public string ProsClass()
+    private string ProsClass()
     {
         return IsOverallPositive() ? "alert-success" : "";
     }
 
-    public string ConsClass()
+    private string ConsClass()
     {
         return IsOverallNegative() ? "alert-danger" : "";
     }
 
-    public List<Reason> ReasonList;
+    private List<Reason> _reasonList;
 
-    public string Question = "Click to change the question.";
+    private string Question = "Click to change the question.";
 
-    public decimal Total()
+    private decimal ProsTotal()
     {
-        var total = ReasonList.Sum(x => x.TotalValue);
-        return total;
+        return _reasonList.Where(x => x.IsPro()).Sum(x => x.TotalValue);
     }
 
-    public bool IsOverallPositive()
+    private decimal ConsTotal()
     {
-        return Total() > Threshold;
+        return _reasonList.Where(x => x.IsCon()).Sum(x => x.TotalValue);
     }
 
-    public bool IsOverallNegative()
+    private decimal Total()
     {
-        return Total() < -Threshold;
+        return _reasonList.Sum(x => x.TotalValue);
+        
     }
 
-    public void ChangeQuestion(string newQuestion)
+    private bool IsOverallPositive()
+    {
+        return Total() > _threshold;
+    }
+
+    private bool IsOverallNegative()
+    {
+        return Total() < -_threshold;
+    }
+
+    private void ChangeQuestion(string newQuestion)
     {
         Question = newQuestion;
         _showEditor = !_showEditor;
@@ -77,10 +94,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        ReasonList = new List<Reason>
+        _reasonList = new List<Reason>
         {
             new Reason(new Description("Good thing"), new Weight(11), new Probability(100)),
-            new Reason(new Description("Bad thing"), new Weight(-10), new Probability(100))
+            new Reason(new Description("Bad thing"), new Weight(-10), new Probability(50))
         };
     }
 }

@@ -1,0 +1,68 @@
+﻿@using procon.Features.Reasons
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="row justify-content-center">
+            <h3>@(this.Type + "s")</h3>
+        </div>
+    </div>
+    <div class="card-body @Class()">
+        @foreach (var reason in Reasons)
+        {
+            <div class="row justify-content-between">
+                <div class="col-8">
+                    @reason.Description
+                </div>
+                <div class="col-4">
+                    @reason.Weight.ToString()
+                </div>
+            </div>
+        }
+    </div>
+    <div class="card-footer">
+        Total : @Total()
+        <button type="button" class="btn btn-block @ButtonClass()">Add @this.Type</button>
+    </div>
+</div>
+
+@code {
+
+    public enum ListType
+    {
+        Pro,
+        Con
+    }
+
+    [Parameter] public List<Reason> Reasons { get; set; }
+    [Parameter] public ListType Type { get; set; }
+    [Parameter] public bool Winning { get; set; }
+
+    public string ButtonClass()
+    {
+        return Type == ListType.Pro ? "alert-success" : "alert-danger";
+    }
+
+    public decimal Total()
+    {
+        return Reasons.Sum(x => x.TotalValue);
+    }
+
+    public string Class()
+    {
+        if (!Winning)
+        {
+            return "alert-warning";
+        }
+        if (Type == ListType.Pro)
+        {
+            return "alert-success";
+        }
+        if (Type == ListType.Con)
+        {
+            return "alert-danger";
+        }
+
+        return "";
+    }
+}

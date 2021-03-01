@@ -22,8 +22,8 @@ jobs:
         - name: Publish
           run: dotnet publish src/procon.csproj --configuration Release
         # changes the base-tag in index.html from '/' to 'procon' to match GitHub Pages repository subdirectory
-        - name: Change base-tag in index.html from / to BlazorGitHubPagesDemo
-          run: sed -i 's/<base href="\/" \/>/<base href="\/procon\/" \/>/g'release/wwwroot/index.html
+        - name: Change base-tag in index.html from / to procon
+          run: sed -i 's/<base href="\/" \/>/<base href="\/procon\/" \/>/g' release/wwwroot/index.html
 
         # Publish the website
         - name: GitHub Pages action

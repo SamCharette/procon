@@ -2,7 +2,15 @@
 @using procon.Features.Reasons
 @using procon.Features.Reasons.Value_Objects
 
-<h1>Enter your list of pros and cons</h1>
+@if (_showEditor)
+{
+    <input class="form-control" value="@Question" @onchange="@((ChangeEventArgs __e) => ChangeQuestion(__e.Value.ToString()))" />
+}
+else
+{
+    <h2 hidden="@_showEditor" @onclick="@(() => _showEditor = !_showEditor)">@Question</h2>
+}
+
 
 @if (ReasonList != null)
 {
@@ -20,7 +28,16 @@
 
 @code
 {
+    private bool _showEditor = false;
     private List<Reason> ReasonList;
+
+    public string Question = "Click to change the question.";
+
+    public void ChangeQuestion(string newQuestion)
+    {
+        Question = newQuestion;
+        _showEditor = !_showEditor;
+    }
 
     protected override async Task OnInitializedAsync()
     {

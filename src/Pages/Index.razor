@@ -15,12 +15,18 @@ else
 @if (_reasonList != null)
 {
 
-    <div class="row @MainClass()">
-        <div class="col-md-6 @ProsClass()">
-            <ReasonList Name="Pros" Total="@ProsTotal()" Reasons="@_reasonList.Where(x => x.IsPro()).ToList()"></ReasonList>
+    <div class="row">
+        <div class="col-md-6">
+            <ReasonList 
+                Type=ReasonList.ListType.Pro    
+                Winning="@IsOverallPositive()"
+                Reasons="@_reasonList.Where(x => x.IsPro()).ToList()"></ReasonList>
         </div>
-        <div class="col-md-6 @ConsClass()">
-            <ReasonList Name="Cons" Total="@ConsTotal()" Reasons="@_reasonList.Where(x => x.IsCon()).ToList()"></ReasonList>
+        <div class="col-md-6">
+            <ReasonList 
+                Type=ReasonList.ListType.Con
+                Winning="@IsOverallNegative()"
+                Reasons="@_reasonList.Where(x => x.IsCon()).ToList()"></ReasonList>
         </div>
     </div>
 }
@@ -40,12 +46,12 @@ else
 
     private string ProsClass()
     {
-        return IsOverallPositive() ? "alert-success" : "";
+        return IsOverallPositive() ? "alert-success" : "alert-warning";
     }
 
     private string ConsClass()
     {
-        return IsOverallNegative() ? "alert-danger" : "";
+        return IsOverallNegative() ? "alert-danger" : "alert-warning";
     }
     
     private decimal ProsTotal()
@@ -85,7 +91,7 @@ else
         _reasonList = new List<Reason>
         {
             new Reason(new Description("Good thing"), new Weight(11)),
-            new Reason(new Description("Bad thing"), new Weight(-10), new Probability(50))
+            new Reason(new Description("Bad thing"), new Weight(-10), new Probability(100))
         };
     }
 }

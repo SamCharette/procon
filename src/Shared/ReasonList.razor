@@ -4,10 +4,10 @@
 <div class="card">
     <div class="card-header">
         <div class="row justify-content-center">
-            <h3>@Name</h3>
+            <h3>@(this.Type + "s")</h3>
         </div>
     </div>
-    <div class="card-body">
+    <div class="card-body @Class()">
         @foreach (var reason in Reasons)
         {
             <div class="row justify-content-between">
@@ -21,23 +21,48 @@
         }
     </div>
     <div class="card-footer">
-        Total : @Total
-        <button type="button" class="btn btn-block @ButtonClass()">Add @Name</button>
+        Total : @Total()
+        <button type="button" class="btn btn-block @ButtonClass()">Add @this.Type</button>
     </div>
 </div>
 
-
-
-
-
-
 @code {
-    [Parameter] public string Name { get; set; }
+
+    public enum ListType
+    {
+        Pro,
+        Con
+    }
+
     [Parameter] public List<Reason> Reasons { get; set; }
-    [Parameter] public decimal Total { get; set; }
+    [Parameter] public ListType Type { get; set; }
+    [Parameter] public bool Winning { get; set; }
 
     public string ButtonClass()
     {
-        return @Name == "Pros" ? "alert-success" : "alert-danger";
+        return Type == ListType.Pro ? "alert-success" : "alert-danger";
+    }
+
+    public decimal Total()
+    {
+        return Reasons.Sum(x => x.TotalValue);
+    }
+
+    public string Class()
+    {
+        if (!Winning)
+        {
+            return "alert-warning";
+        }
+        if (Type == ListType.Pro)
+        {
+            return "alert-success";
+        }
+        if (Type == ListType.Con)
+        {
+            return "alert-danger";
+        }
+
+        return "";
     }
 }

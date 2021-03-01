@@ -21,9 +21,12 @@ jobs:
         # Generate the website
         - name: Publish
           run: dotnet publish src/procon.csproj --configuration Release
-        # changes the base-tag in index.html from '/' to 'procon' to match GitHub Pages repository subdirectory
-        - name: Change base-tag in index.html from / to procon
-          run: sed -i 's/<base href="\/" \/>/<base href="\/procon\/" \/>/g' release/wwwroot/index.html
+
+        - name: Rewrite base href
+          uses: SamCharette/ghaction-rewrite-base-href@v1
+          with:
+            html_path: ${{ env.PUBLISH_DIR }}/index.html
+            base_href: /procon/
 
         # Publish the website
         - name: GitHub Pages action

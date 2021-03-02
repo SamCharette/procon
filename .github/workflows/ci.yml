@@ -23,7 +23,7 @@ jobs:
           run: dotnet publish src/procon.csproj --configuration Release
 
         - name: Rewrite base href
-          run: sed -i 's/<base href="\/" \/>/<base href="\/procon\/" \/>/g' release/net5.0/wwwroot/index.html
+          run: sed -i 's/<base href="\/" \/>/<base href="\/procon\/" \/>/g' Release/net5.0/wwwroot/index.html
 
 
         # Publish the website

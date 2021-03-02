@@ -23,10 +23,8 @@ jobs:
           run: dotnet publish src/procon.csproj --configuration Release
 
         - name: Rewrite base href
-          uses: SteveSandersonMS/ghaction-rewrite-base-href@v1 
-          with:
-            html_path: ${{ env.PUBLISH_DIR }}/index.html
-            base_href: /procon/
+          run: sed -i 's/<base href="\/" \/>/<base href="\/procon\/" \/>/g' release/wwwroot/index.html
+
 
         # Publish the website
         - name: GitHub Pages action

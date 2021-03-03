@@ -1,4 +1,5 @@
 ﻿@using procon.Features.Reasons
+@using procon.Features.Reasons.Value_Objects
 
 
 <div class="card">
@@ -22,7 +23,15 @@
     </div>
     <div class="card-footer">
         Total : @Total()
-        <button type="button" class="btn btn-block @ButtonClass()">Add @this.Type</button>
+        @if (this.Type == ListType.Pro)
+        {
+            <button type="button" class="btn btn-block @ButtonClass()" @onclick="IncrementPro">Add @this.Type</button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-block @ButtonClass()" @onclick="IncrementCon">Add @this.Type</button>
+
+        }
     </div>
 </div>
 
@@ -37,6 +46,29 @@
     [Parameter] public List<Reason> Reasons { get; set; }
     [Parameter] public ListType Type { get; set; }
     [Parameter] public bool Winning { get; set; }
+    [Parameter] public procon.Pages.Index Parent { get; set; }
+
+    public string Style { get; set; }
+
+    private void IncrementPro()
+    {
+        var proToIncrement = Reasons.FirstOrDefault(x => x.IsPro());
+        if (proToIncrement != null)
+        {
+            proToIncrement.Weight = new Weight(proToIncrement.Weight.Value() + 1);
+            Parent.RefreshMe();
+        }
+    }
+
+    private void IncrementCon()
+    {
+        var conToIncrement = Reasons.FirstOrDefault(x => x.IsCon());
+        if (conToIncrement != null)
+        {
+            conToIncrement.Weight = new Weight(conToIncrement.Weight.Value() - 1);
+            Parent.RefreshMe();
+        }
+    }
 
     public string ButtonClass()
     {

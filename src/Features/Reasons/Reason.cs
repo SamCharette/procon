@@ -7,7 +7,7 @@ namespace procon.Features.Reasons
     {
         private Guid _id;
         public Description Description { get; private set; }
-        public Weight Weight { get; private set; }
+        public Weight Weight { get; set; }
         public Probability Probability { get; private set; }
 
         public Reason(Description description, Weight weight, Probability probability = null)
